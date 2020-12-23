@@ -133,6 +133,16 @@ public class DefaultParser extends Parser {
 			}
 			throw new ParseException("Expected " + msg.substring(4), source, pos, 1);
 
+		} else if (pattern instanceof RulePattern.Chained) {
+			var cast = (RulePattern.Chained) pattern;
+			var tokens = new ArrayList<TokenType>();
+			for (var p : cast.getPatterns()) {
+				readRulePattern(p);
+				// TODO
+			}
+			// TODO
+			return new TokenType();
+
 		} else {
 			throw new ParseException("Unknown RulePattern: " + pattern.toString());
 		}

@@ -14,6 +14,23 @@ public abstract class RulePattern {
 
 
 
+	public static class Chained extends RulePattern {
+
+		private final RulePattern[] patterns;
+
+		public Chained(Quantifier quantifier, RulePattern...patterns) {
+			super(quantifier);
+			this.patterns = patterns;
+		}
+
+		public RulePattern[] getPatterns() {
+			return patterns;
+		}
+
+	}
+
+
+
 	public static class MultiplePossible extends RulePattern {
 
 		private final RulePattern[] patterns;

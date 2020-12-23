@@ -1,0 +1,7 @@
+# Compiler Output
+/out
+/target
+
+# IDEs
+/.idea
+*.iml

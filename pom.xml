@@ -5,6 +5,8 @@
     <groupId>net.tassia</groupId>
     <artifactId>parser</artifactId>
     <version>1.0.0</version>
+	<name>Parser</name>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -13,7 +15,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<name>Parser</name>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>

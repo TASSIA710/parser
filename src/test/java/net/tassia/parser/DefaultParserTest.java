@@ -2,7 +2,6 @@ package net.tassia.parser;
 
 import net.tassia.parser.rule.RuleSet;
 import net.tassia.parser.token.TokenProvider;
-import net.tassia.parser.token.TokenType;
 import org.junit.Test;
 
 import java.io.IOException;

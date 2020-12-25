@@ -127,11 +127,7 @@ public class DefaultParser extends Parser {
 					pos = startPos;
 				}
 			}
-			var msg = new StringBuilder();
-			for (var p : cast.getPatterns()) {
-				msg.append(" or ").append(p.toString());
-			}
-			throw new ParseException("Expected " + msg.substring(4), source, pos, 1);
+			throw new ParseException("Expected " + cast.toString(), source, pos, 1);
 
 		} else if (pattern instanceof RulePattern.Chained) {
 			var cast = (RulePattern.Chained) pattern;

@@ -2,11 +2,6 @@ package net.tassia.parser.token;
 
 public abstract class TokenType {
 
-	private TokenType() {
-	}
-
-
-
 	public static class Multiple extends TokenType {
 
 		private final TokenType[] tokens;
@@ -20,8 +15,6 @@ public abstract class TokenType {
 		}
 
 	}
-
-
 
 	public static class StringValue extends TokenType {
 

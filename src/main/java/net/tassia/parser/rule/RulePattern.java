@@ -2,7 +2,7 @@ package net.tassia.parser.rule;
 
 public abstract class RulePattern {
 
-	private final Quantifier quantifier;
+	private Quantifier quantifier;
 
 	private RulePattern(Quantifier quantifier) {
 		this.quantifier = quantifier;
@@ -10,6 +10,10 @@ public abstract class RulePattern {
 
 	public Quantifier getQuantifier() {
 		return quantifier;
+	}
+
+	public void setQuantifier(Quantifier quantifier) {
+		this.quantifier = quantifier;
 	}
 
 

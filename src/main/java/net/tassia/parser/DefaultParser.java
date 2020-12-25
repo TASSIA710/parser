@@ -2,6 +2,9 @@ package net.tassia.parser;
 
 import net.tassia.parser.rule.RulePattern;
 import net.tassia.parser.rule.RuleSet;
+import net.tassia.parser.token.StringToken;
+import net.tassia.parser.token.TokenType;
+import net.tassia.parser.token.Tokens;
 
 import java.util.ArrayList;
 
@@ -18,28 +21,27 @@ public class DefaultParser extends Parser {
 	protected int pos;
 
 	@Override
-	public void parse(RuleSet rules, String source) throws ParseException {
+	public TokenType parse(RuleSet rules, String source) throws ParseException {
 		// Reset
 		this.rules = rules;
 		this.source = source;
 		this.pos = 0;
 
 		// Read root rule
-		readRulePattern(rules.getRoot().getPattern());
+		var token = readRulePattern(rules.getRoot().getPattern());
 
 		// End
-		if (pos == source.length()) return;
+		if (pos == source.length()) return token;
 		throw new ParseException("Expected EOF", source, pos, source.length() - pos);
 	}
 
 
 
-	protected void readRulePattern(RulePattern pattern) throws ParseException {
+	protected TokenType readRulePattern(RulePattern pattern) throws ParseException {
 		switch (pattern.getQuantifier()) {
 			case ONCE -> {
 				// Read the pattern exactly once
-				var token = readRulePatternOnce(pattern);
-				// TODO
+				return readRulePatternOnce(pattern);
 
 			}
 			case OPTIONAL -> {
@@ -53,7 +55,7 @@ public class DefaultParser extends Parser {
 					pos = startPos;
 					token = null;
 				}
-				// TODO
+				return token;
 
 			}
 			case MULTIPLE -> {
@@ -69,7 +71,7 @@ public class DefaultParser extends Parser {
 						break;
 					}
 				}
-				// TODO
+				return new Tokens(tokens.toArray(new TokenType[0]));
 
 			}
 			case ANY -> {
@@ -84,7 +86,7 @@ public class DefaultParser extends Parser {
 						break;
 					}
 				}
-				// TODO
+				return new Tokens(tokens.toArray(new TokenType[0]));
 
 			}
 			default -> {
@@ -99,7 +101,7 @@ public class DefaultParser extends Parser {
 			var str = cast.getValue();
 			if (source.startsWith(str, pos)) {
 				pos += str.length();
-				return new TokenType();
+				return new StringToken(str);
 			} else {
 				var got = substring(pos, pos + str.length());
 				throw new ParseException("Expected '" + str + "' but got '" + got + "'", source, pos, str.length());
@@ -111,18 +113,14 @@ public class DefaultParser extends Parser {
 			if (rule == null) {
 				throw new ParseException("Unknown Rule: " + cast.getRule());
 			}
-			readRulePattern(rule.getPattern());
-			// TODO
-			return new TokenType();
+			return readRulePattern(rule.getPattern());
 
 		} else if (pattern instanceof RulePattern.MultiplePossible) {
 			var cast = (RulePattern.MultiplePossible) pattern;
 			for (var p : cast.getPatterns()) {
 				var startPos = pos;
 				try {
-					readRulePattern(p);
-					// TODO
-					return new TokenType();
+					return readRulePattern(p);
 				} catch (ParseException ignored) {
 					pos = startPos;
 				}
@@ -133,11 +131,9 @@ public class DefaultParser extends Parser {
 			var cast = (RulePattern.Chained) pattern;
 			var tokens = new ArrayList<TokenType>();
 			for (var p : cast.getPatterns()) {
-				readRulePattern(p);
-				// TODO
+				tokens.add(readRulePattern(p));
 			}
-			// TODO
-			return new TokenType();
+			return new Tokens(tokens.toArray(new TokenType[0]));
 
 		} else {
 			throw new ParseException("Unknown RulePattern: " + pattern.toString());

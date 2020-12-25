@@ -1,4 +1,4 @@
-package net.tassia.parser;
+package net.tassia.parser.token;
 
 public class TokenType {
 

@@ -3,6 +3,7 @@ package net.tassia.parser;
 import net.tassia.parser.rule.RulePattern;
 import net.tassia.parser.rule.RuleSet;
 import net.tassia.parser.token.StringToken;
+import net.tassia.parser.token.TokenProvider;
 import net.tassia.parser.token.TokenType;
 import net.tassia.parser.token.Tokens;
 
@@ -16,14 +17,21 @@ import java.util.ArrayList;
  */
 public class DefaultParser extends Parser {
 
-	protected RuleSet rules;
 	protected String source;
 	protected int pos;
 
+	/**
+	 * Creates a new parser using the given {@link TokenProvider} and {@link RuleSet}.
+	 * @param provider the token provider
+	 * @param rules the rules
+	 */
+	public DefaultParser(TokenProvider provider, RuleSet rules) {
+		super(provider, rules);
+	}
+
 	@Override
-	public TokenType parse(RuleSet rules, String source) throws ParseException {
+	public TokenType parse(String source) throws ParseException {
 		// Reset
-		this.rules = rules;
 		this.source = source;
 		this.pos = 0;
 
@@ -113,7 +121,8 @@ public class DefaultParser extends Parser {
 			if (rule == null) {
 				throw new ParseException("Unknown Rule: " + cast.getRule());
 			}
-			return readRulePattern(rule.getPattern());
+			var raw = readRulePattern(rule.getPattern());
+			return provider.provide(rule, raw);
 
 		} else if (pattern instanceof RulePattern.MultiplePossible) {
 			var cast = (RulePattern.MultiplePossible) pattern;

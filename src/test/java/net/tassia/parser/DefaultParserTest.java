@@ -1,9 +1,7 @@
 package net.tassia.parser;
 
-import net.tassia.parser.rule.Quantifier;
-import net.tassia.parser.rule.Rule;
-import net.tassia.parser.rule.RulePattern;
 import net.tassia.parser.rule.RuleSet;
+import net.tassia.parser.token.StringToken;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,20 +16,41 @@ public class DefaultParserTest {
 	}
 
 	@Test
-	public void testBasicParser() throws IOException, ParseException {
-		var inputBytes = readResource("test_input_1.txt");
+	public void testBasicParser() throws Exception {
+		var inputBytes = readResource("test_bnf_1.bnf");
 		var input = new String(inputBytes, StandardCharsets.UTF_8).trim();
 
-		var rules = new RuleSet();
-		rules.setRoot(new Rule("ROOT", new RulePattern.ConstantString(Quantifier.MULTIPLE, "ab")));
-
-		var parser = new DefaultParser();
+		RuleSet rules;
+		var bnfParser = new DefaultBNFParser();
 		try {
-			parser.parse(rules, input);
+			rules = bnfParser.parse(input);
 		} catch (ParseException ex) {
 			System.out.println(ParseException.getDisplayed(ex));
-			System.out.println("-".repeat(30) + "\n");
-			ex.printStackTrace();
+			throw ex;
+		}
+
+		var parser = new DefaultParser((rule, raw) -> {
+			if (rule.getName().equals("ROOT")) {
+
+			} else if (rule.getName().equals("TARGET")) {
+				var cast = (StringToken) raw;
+				System.out.println(cast.getValue());
+			} else {
+				System.err.println("wtf");
+			}
+			return raw;
+		}, rules);
+
+		parser.parse("Hello World!");
+
+		parser.parse("Hello Stranger!");
+
+		try {
+			parser.parse("Hello Friend!");
+			// This didn't error, so manually throw an exception
+			throw new Exception();
+		} catch (ParseException ignored) {
+			// This is supposed to error
 		}
 	}
 

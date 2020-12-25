@@ -1,7 +1,7 @@
 package net.tassia.parser;
 
 import net.tassia.parser.rule.RuleSet;
-import net.tassia.parser.token.StringToken;
+import net.tassia.parser.token.TokenType;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class DefaultParserTest {
 			if (rule.getName().equals("ROOT")) {
 
 			} else if (rule.getName().equals("TARGET")) {
-				var cast = (StringToken) raw;
+				var cast = (TokenType.StringValue) raw;
 				System.out.println(cast.getValue());
 			} else {
 				System.err.println("wtf");

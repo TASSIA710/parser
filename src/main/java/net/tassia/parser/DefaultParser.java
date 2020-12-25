@@ -2,10 +2,8 @@ package net.tassia.parser;
 
 import net.tassia.parser.rule.RulePattern;
 import net.tassia.parser.rule.RuleSet;
-import net.tassia.parser.token.StringToken;
 import net.tassia.parser.token.TokenProvider;
 import net.tassia.parser.token.TokenType;
-import net.tassia.parser.token.Tokens;
 
 import java.util.ArrayList;
 
@@ -79,7 +77,7 @@ public class DefaultParser extends Parser {
 						break;
 					}
 				}
-				return new Tokens(tokens.toArray(new TokenType[0]));
+				return new TokenType.Multiple(tokens.toArray(new TokenType[0]));
 
 			}
 			case ANY -> {
@@ -94,12 +92,10 @@ public class DefaultParser extends Parser {
 						break;
 					}
 				}
-				return new Tokens(tokens.toArray(new TokenType[0]));
+				return new TokenType.Multiple(tokens.toArray(new TokenType[0]));
 
 			}
-			default -> {
-				throw new ParseException("Unknown Quantifier: " + pattern.getQuantifier());
-			}
+			default -> throw new ParseException("Unknown Quantifier: " + pattern.getQuantifier());
 		}
 	}
 
@@ -109,7 +105,7 @@ public class DefaultParser extends Parser {
 			var str = cast.getValue();
 			if (source.startsWith(str, pos)) {
 				pos += str.length();
-				return new StringToken(str);
+				return new TokenType.StringValue(str);
 			} else {
 				var got = substring(pos, pos + str.length());
 				throw new ParseException("Expected '" + str + "' but got '" + got + "'", source, pos, str.length());
@@ -142,7 +138,7 @@ public class DefaultParser extends Parser {
 			for (var p : cast.getPatterns()) {
 				tokens.add(readRulePattern(p));
 			}
-			return new Tokens(tokens.toArray(new TokenType[0]));
+			return new TokenType.Multiple(tokens.toArray(new TokenType[0]));
 
 		} else {
 			throw new ParseException("Unknown RulePattern: " + pattern.toString());

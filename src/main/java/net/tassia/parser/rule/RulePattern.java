@@ -16,6 +16,8 @@ public abstract class RulePattern {
 		this.quantifier = quantifier;
 	}
 
+	public abstract String toString();
+
 
 
 	public static class Chained extends RulePattern {
@@ -29,6 +31,17 @@ public abstract class RulePattern {
 
 		public RulePattern[] getPatterns() {
 			return patterns;
+		}
+
+		@Override
+		public String toString() {
+			var sb = new StringBuilder("(");
+			for (var pattern : patterns) {
+				sb.append(pattern.toString());
+				sb.append(" ");
+			}
+			var str = sb.toString();
+			return str.substring(0, str.length() - 1) + ")";
 		}
 
 	}
@@ -48,6 +61,17 @@ public abstract class RulePattern {
 			return patterns;
 		}
 
+		@Override
+		public String toString() {
+			var sb = new StringBuilder();
+			for (var pattern : patterns) {
+				sb.append(pattern.toString());
+				sb.append(" | ");
+			}
+			var str = sb.toString();
+			return str.substring(0, str.length() - 3);
+		}
+
 	}
 
 
@@ -65,6 +89,11 @@ public abstract class RulePattern {
 			return rule;
 		}
 
+		@Override
+		public String toString() {
+			return "<" + rule + ">";
+		}
+
 	}
 
 
@@ -80,6 +109,12 @@ public abstract class RulePattern {
 
 		public String getValue() {
 			return value;
+		}
+
+		@Override
+		public String toString() {
+			// TODO: Escape value
+			return "\"" + value + "\"";
 		}
 
 	}

@@ -1,6 +1,7 @@
 package net.tassia.parser;
 
 import net.tassia.parser.rule.RuleSet;
+import net.tassia.parser.token.TokenProvider;
 import net.tassia.parser.token.TokenType;
 import org.junit.Test;
 
@@ -29,17 +30,7 @@ public class DefaultParserTest {
 			throw ex;
 		}
 
-		var parser = new DefaultParser((rule, raw) -> {
-			if (rule.getName().equals("ROOT")) {
-
-			} else if (rule.getName().equals("TARGET")) {
-				var cast = (TokenType.StringValue) raw;
-				System.out.println(cast.getValue());
-			} else {
-				System.err.println("wtf");
-			}
-			return raw;
-		}, rules);
+		var parser = new DefaultParser(TokenProvider.NO_OPERATION, rules);
 
 		parser.parse("Hello World!");
 

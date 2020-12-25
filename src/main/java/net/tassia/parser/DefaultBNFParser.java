@@ -63,6 +63,9 @@ public class DefaultBNFParser extends BNFParser {
 				patterns.add(readChainedPattern());
 				skipWhitespace();
 			}
+			if (patterns.size() == 1) {
+				return patterns.get(0);
+			}
 			return new RulePattern.MultiplePossible(Quantifier.ONCE, patterns.toArray(new RulePattern[0]));
 		}
 
@@ -72,6 +75,9 @@ public class DefaultBNFParser extends BNFParser {
 				skipWhitespace();
 				patterns.add(readPatternSingle());
 				skipWhitespace();
+			}
+			if (patterns.size() == 1) {
+				return patterns.get(0);
 			}
 			return new RulePattern.Chained(Quantifier.ONCE, patterns.toArray(new RulePattern[0]));
 		}

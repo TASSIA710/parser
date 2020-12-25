@@ -1,5 +1,6 @@
 package net.tassia.parser;
 
+import net.tassia.parser.rule.Quantifier;
 import net.tassia.parser.rule.RulePattern;
 import net.tassia.parser.rule.RuleSet;
 import net.tassia.parser.token.TokenProvider;
@@ -34,7 +35,7 @@ public class DefaultParser extends Parser {
 		this.pos = 0;
 
 		// Read root rule
-		var token = readRulePattern(rules.getRoot().getPattern());
+		var token = readRulePattern(new RulePattern.RuleCall(Quantifier.ONCE, rules.getRoot().getName()));
 
 		// End
 		if (pos == source.length()) return token;

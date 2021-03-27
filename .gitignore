@@ -1,7 +1,6 @@
 # Compiler Output
-/out
-/target
+target/
 
-# IDEs
-/.idea
+# IntelliJ
+.idea/
 *.iml

@@ -9,6 +9,7 @@ import net.tassia.parser.token.TokenType
 
 object TestGrammar1 {
 
+	// <TARGET> ::= "World" | "Stranger"
 	val TARGET	by "World" or "Stranger" token
 	{ token ->
 		require(token is StringToken)
@@ -20,6 +21,7 @@ object TestGrammar1 {
 		return@token token
 	}
 
+	// <ROOT> ::= "Hello " <TARGET> "!"
 	val ROOT	by "Hello " with TARGET with "!" token
 	{ token ->
 		require(token is MultipleTokens)

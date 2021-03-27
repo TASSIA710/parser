@@ -1,2 +1,0 @@
-<ROOT> ::= "Hello " <TARGET> "!"
-<TARGET> ::= "World" | "Stranger"

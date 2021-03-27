@@ -1,19 +1,20 @@
-package net.tassia.parser.rule;
+package net.tassia.parser.rule
 
 /**
  * Defines how many times a given pattern should be matched.
+ *
  * @since Parser 1.0
  * @author Tassilo
  */
-public enum Quantifier {
+enum class Quantifier {
 
 	/**
-	 * The given pattern must be matched once.
+	 * The given pattern must be matched exactly once.
 	 */
 	ONCE,
 
 	/**
-	 * The given pattern can be matched once.
+	 * The given pattern can be matched once, or not at all.
 	 */
 	OPTIONAL,
 
@@ -25,6 +26,6 @@ public enum Quantifier {
 	/**
 	 * The given pattern can be matched an undefined amount of times.
 	 */
-	ANY
+	ANY;
 
 }

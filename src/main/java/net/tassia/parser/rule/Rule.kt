@@ -1,5 +1,7 @@
 package net.tassia.parser.rule
 
+import kotlin.reflect.KProperty
+
 /**
  * Defines a rule (basically a single line of a BNF file).
  *
@@ -22,4 +24,10 @@ data class Rule(
 	 */
 	val pattern: RulePattern,
 
-)
+) {
+
+	operator fun getValue(owner: Any, property: KProperty<*>): Rule {
+		return Rule(property.name, RuleCallPattern(this, Quantifier.ONCE))
+	}
+
+}

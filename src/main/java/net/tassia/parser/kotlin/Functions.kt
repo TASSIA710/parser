@@ -53,14 +53,12 @@ infix fun RulePattern.or(other: RulePattern): RulePattern {
 }
 
 infix fun RulePattern.with(other: RulePattern): RulePattern {
-	/*return if (this is ChainedPattern && other is ChainedPattern) {
-		ChainedPattern(arrayOf(*this.patterns, *other.patterns), Quantifier.ONCE)
-	} else if (this is ChainedPattern) {
-		ChainedPattern(arrayOf(*this.patterns, other), Quantifier.ONCE)
-	} else if (other is ChainedPattern) {
-		ChainedPattern(arrayOf(this, *other.patterns), Quantifier.ONCE)
-	} else {
-		ChainedPattern(arrayOf(this, other), Quantifier.ONCE)
-	}*/
+	if (this is ChainedPattern && other is ChainedPattern && this.quantifier == Quantifier.ONCE && other.quantifier == Quantifier.ONCE) {
+		return ChainedPattern(arrayOf(*this.patterns, *other.patterns), Quantifier.ONCE)
+	} else if (this is ChainedPattern && this.quantifier == Quantifier.ONCE) {
+		return ChainedPattern(arrayOf(*this.patterns, other), Quantifier.ONCE)
+	} else if (other is ChainedPattern && other.quantifier == Quantifier.ONCE) {
+		return ChainedPattern(arrayOf(this, *other.patterns), Quantifier.ONCE)
+	}
 	return ChainedPattern(arrayOf(this, other), Quantifier.ONCE)
 }

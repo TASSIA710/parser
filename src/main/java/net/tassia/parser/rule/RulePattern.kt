@@ -1,13 +1,22 @@
 package net.tassia.parser.rule
 
+import net.tassia.parser.token.TokenProvider
+import net.tassia.parser.token.TokenType
 import kotlin.reflect.KProperty
 
 sealed class RulePattern(var quantifier: Quantifier) {
 
+	private var tokenProvider: TokenProvider = TokenProvider.NO_OPERATION
+
 	abstract override fun toString(): String
 
 	operator fun getValue(owner: Any, property: KProperty<*>): Rule {
-		return Rule(property.name, this)
+		return Rule(property.name, this, tokenProvider)
+	}
+
+	infix fun token(tokenProvider: (TokenType) -> TokenType): RulePattern {
+		this.tokenProvider = TokenProvider { _, raw -> tokenProvider(raw) }
+		return this
 	}
 
 }

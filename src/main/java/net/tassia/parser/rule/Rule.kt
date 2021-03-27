@@ -1,5 +1,6 @@
 package net.tassia.parser.rule
 
+import net.tassia.parser.token.TokenProvider
 import kotlin.reflect.KProperty
 
 /**
@@ -11,20 +12,27 @@ import kotlin.reflect.KProperty
  * @since Parser 1.0
  * @author Tassilo
  */
-data class Rule(
+class Rule(
 
 	/**
 	 * The name of this rule.
 	 */
 	val name: String,
 
-
 	/**
 	 * The pattern of this rule.
 	 */
 	val pattern: RulePattern,
 
+	/**
+	 * A rule-specific custom token provider.
+	 */
+	tokenProvider: TokenProvider = TokenProvider.NO_OPERATION,
+
 ) {
+
+	var tokenProvider: TokenProvider = tokenProvider
+		private set
 
 	operator fun getValue(owner: Any, property: KProperty<*>): Rule {
 		return Rule(property.name, RuleCallPattern(this, Quantifier.ONCE))

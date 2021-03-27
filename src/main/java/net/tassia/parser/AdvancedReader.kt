@@ -52,7 +52,8 @@ open class AdvancedReader(val source: String) {
 
 
 	fun expected(vararg expected: String): ParseException {
-		return ParseException(source, index, 1, "Expected '${expected.joinToString()}'.")
+		val maxPeek = expected.maxOf { it.length }
+		return unexpected(peek(maxPeek), *expected)
 	}
 
 	fun unexpected(got: String, vararg expected: String): ParseException {

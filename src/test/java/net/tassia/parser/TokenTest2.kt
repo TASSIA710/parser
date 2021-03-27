@@ -16,6 +16,30 @@ class TokenTest2 {
 		assertEquals(4.0, result.value)
 	}
 
+	@Test
+	fun test2() {
+		val parser = DefaultParser(provider)
+		val result = parser.parse("2*2", TestGrammar2.TERM)
+		require(result is TermToken)
+		assertEquals(4.0, result.value)
+	}
+
+	@Test
+	fun test3() {
+		val parser = DefaultParser(provider)
+		val result = parser.parse("2+2*2", TestGrammar2.TERM)
+		require(result is TermToken)
+		assertEquals(6.0, result.value)
+	}
+
+	@Test
+	fun test4() {
+		val parser = DefaultParser(provider)
+		val result = parser.parse("2*2+2", TestGrammar2.TERM)
+		require(result is TermToken)
+		assertEquals(6.0, result.value)
+	}
+
 
 
 	private val provider = TokenProvider { rule, raw ->

@@ -1,4 +1,5 @@
 <img src="https://cdn.tassia.net/github/assets/TASSIA710/parser.png" align="center" alt="parser">
+<hr>
 <p align="center">Parse strings with ease in Kotlin.</p>
 
 <p align="center">

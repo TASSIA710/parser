@@ -119,7 +119,7 @@ class InstantiatedDefaultParser(private val provider: TokenProvider, source: Str
 	fun readChained(pattern: ChainedPattern): TokenType {
 		val tokens = mutableListOf<TokenType>()
 		for (p in pattern.patterns) {
-			tokens.add(readPatternOnce(p))
+			tokens.add(readPattern(p))
 		}
 		return MultipleTokens(tokens)
 	}

@@ -96,9 +96,13 @@ class InstantiatedDefaultParser(private val provider: TokenProvider, source: Str
 
 	@Throws(ParseException::class)
 	fun readRuleCall(pattern: RuleCallPattern): TokenType {
-		var token = readPattern(pattern.rule.pattern)
-		token = pattern.rule.tokenProvider.provide(pattern.rule, token)
-		return provider.provide(pattern.rule, token)
+		try {
+			var token = readPattern(pattern.rule.pattern)
+			token = pattern.rule.tokenProvider.provide(pattern.rule, token)
+			return provider.provide(pattern.rule, token)
+		} catch (ex: ParseException) {
+			throw ParseException(ex.source, ex.position, ex.length, "Failed to parse rule " + pattern.rule.name, ex)
+		}
 	}
 
 	@Throws(ParseException::class)

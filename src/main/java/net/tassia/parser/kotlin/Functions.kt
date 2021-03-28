@@ -39,6 +39,14 @@ infix fun RulePattern.with(other: Rule) = this with other.once()
 
 
 
+fun range(range: CharRange): RulePattern {
+	return MultiplePossiblePattern(range.map {
+		ConstantStringPattern(it.toString(), Quantifier.ONCE)
+	}.toTypedArray(), Quantifier.ONCE)
+}
+
+
+
 infix fun RulePattern.or(other: RulePattern): RulePattern {
 	/*return if (this is MultiplePossiblePattern && other is MultiplePossiblePattern) {
 		MultiplePossiblePattern(arrayOf(*this.patterns, *other.patterns), Quantifier.ONCE)

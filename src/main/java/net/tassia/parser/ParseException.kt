@@ -17,7 +17,7 @@ import java.io.StringWriter
  * @since Parser 1.0
  * @author Tassilo
  */
-class ParseException(
+open class ParseException(
 
 	/**
 	 * The source string of this error.

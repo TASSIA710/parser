@@ -89,8 +89,7 @@ class InstantiatedDefaultParser(private val provider: TokenProvider, source: Str
 		if (isNext(pattern.value)) {
 			return StringToken(pattern.value)
 		} else {
-			val got = peek(pattern.value.length)
-			throw unexpected(got, pattern.value)
+			throw unexpected(peekSafe(pattern.value.length), pattern.value)
 		}
 	}
 

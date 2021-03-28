@@ -61,3 +61,13 @@ class ConstantStringPattern(val value: String, quantifier: Quantifier) : RulePat
 	}
 
 }
+
+
+
+class CharMatchPattern(val value: (Char) -> Boolean, quantifier: Quantifier) : RulePattern(quantifier) {
+
+	override fun toString(): String {
+		return "\$CM_PRED:$value$"
+	}
+
+}

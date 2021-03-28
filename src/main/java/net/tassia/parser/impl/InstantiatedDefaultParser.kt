@@ -14,7 +14,6 @@ class InstantiatedDefaultParser(private val provider: TokenProvider, source: Str
 			Quantifier.OPTIONAL -> readPatternOptional(pattern)
 			Quantifier.MULTIPLE -> readPatternMultiple(pattern)
 			Quantifier.ANY -> readPatternAny(pattern)
-			else -> throw ParseException(source, -1, 0, "Unknown Quantifier: " + pattern.quantifier)
 		}
 	}
 
@@ -25,10 +24,10 @@ class InstantiatedDefaultParser(private val provider: TokenProvider, source: Str
 		// Read the pattern exactly once
 		return when (pattern) {
 			is ConstantStringPattern -> readConstantString(pattern)
+			is CharMatchPattern -> readCharMatch(pattern)
 			is RuleCallPattern -> readRuleCall(pattern)
 			is MultiplePossiblePattern -> readMultiplePossible(pattern)
 			is ChainedPattern -> readChained(pattern)
-			else -> throw ParseException(source, -1, 0, "Unknown Pattern: " + pattern::class.simpleName)
 		}
 	}
 
@@ -90,6 +89,15 @@ class InstantiatedDefaultParser(private val provider: TokenProvider, source: Str
 			return StringToken(pattern.value)
 		} else {
 			throw unexpected(peekSafe(pattern.value.length), pattern.value)
+		}
+	}
+
+	@Throws(ParseException::class)
+	fun readCharMatch(pattern: CharMatchPattern): TokenType {
+		if (pattern.value(peek())) {
+			return StringToken(next().toString())
+		} else {
+			throw unexpected(peek().toString(), pattern.toString())
 		}
 	}
 

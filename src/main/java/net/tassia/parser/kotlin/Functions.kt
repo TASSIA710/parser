@@ -39,10 +39,20 @@ infix fun RulePattern.with(other: Rule) = this with other.once()
 
 
 
+operator fun CharMatchPattern.not(): CharMatchPattern {
+	return CharMatchPattern({ !value(it) }, quantifier)
+}
+
+
+
 fun range(range: CharRange): RulePattern {
 	return MultiplePossiblePattern(range.map {
 		ConstantStringPattern(it.toString(), Quantifier.ONCE)
 	}.toTypedArray(), Quantifier.ONCE)
+}
+
+fun where(predicate: (Char) -> Boolean): CharMatchPattern {
+	return CharMatchPattern(predicate, Quantifier.ONCE)
 }
 
 

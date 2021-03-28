@@ -1,7 +1,6 @@
 package net.tassia.parser
 
 import java.util.*
-import kotlin.math.min
 
 open class AdvancedReader(val source: String) {
 
@@ -19,19 +18,26 @@ open class AdvancedReader(val source: String) {
 	}
 
 	fun peek(len: Int): String {
-		if (index + len >= source.length) {
-			return source.substring(index)
+		if (index + len <= source.length) {
+			return source.substring(index, index + len)
 		} else {
 			throw EOFException(source)
-			// return source.substring(index, index + len)
+		}
+	}
+
+	fun peekSafe(len: Int): String {
+		return if (index + len <= source.length) {
+			source.substring(index, index + len)
+		} else {
+			source.substring(index) + "<EOF>"
 		}
 	}
 
 	fun next(): Char = peek().also { index++ }
 	fun next(len: Int) = peek(len).also { index += len }
 
-	fun isPeek(test: Char): Boolean = peek() == test
-	fun isPeek(test: String): Boolean = peek(test.length) == test
+	fun isPeek(test: Char): Boolean = index < source.length && peek() == test
+	fun isPeek(test: String): Boolean = index + test.length <= source.length && peek(test.length) == test
 
 	fun isNext(test: Char): Boolean = isPeek(test).also { if (it) next() }
 	fun isNext(test: String): Boolean = isPeek(test).also { if (it) next(test.length) }

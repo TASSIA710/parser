@@ -1,9 +1,25 @@
 package net.tassia.parser.token
 
-open class TokenType
+abstract class TokenType {
 
-object NoneToken : TokenType()
+	abstract fun rawString(): String
 
-class MultipleTokens(val tokens: List<TokenType>) : TokenType()
+}
 
-class StringToken(val value: String) : TokenType()
+object NoneToken : TokenType() {
+	override fun rawString(): String {
+		return ""
+	}
+}
+
+class MultipleTokens(val tokens: List<TokenType>) : TokenType() {
+	override fun rawString(): String {
+		return tokens.joinToString(separator = "", transform = TokenType::rawString)
+	}
+}
+
+class StringToken(val value: String) : TokenType() {
+	override fun rawString(): String {
+		return value
+	}
+}

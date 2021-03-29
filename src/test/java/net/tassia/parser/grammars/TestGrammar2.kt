@@ -8,7 +8,7 @@ import net.tassia.parser.token.TokenType
 object TestGrammar2 {
 
 	// <DIGIT> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-	val DIGIT	by !where(Char::isDigit)
+	val DIGIT	by where(Char::isDigit)
 
 
 

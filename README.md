@@ -42,7 +42,7 @@ so just stay tuned for that. If you have any questions, feel free to spin up an 
 <dependency>
     <groupId>net.tassia</groupId>
     <artifactId>parser</artifactId>
-    <version>1.0.0-PRE-2</version>
+    <version>1.0.0-PRE-3</version>
 </dependency>
 ```
 

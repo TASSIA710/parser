@@ -19,7 +19,7 @@ object TestGrammar2 {
 			require(it is StringToken)
 			return@joinToString it.value
 		}
-		return@token IntegerToken(str.toLong().toDouble())
+		return@token IntegerToken(str.toLong().toDouble(), token.raw)
 	}
 
 
@@ -50,7 +50,7 @@ object TestGrammar2 {
 				}
 			}
 		}
-		return@token ProductToken(temp)
+		return@token ProductToken(temp, token.raw)
 	}
 
 
@@ -81,7 +81,7 @@ object TestGrammar2 {
 				}
 			}
 		}
-		return@token SumToken(temp)
+		return@token SumToken(temp, token.raw)
 	}
 
 
@@ -89,17 +89,17 @@ object TestGrammar2 {
 	// <TERM> ::= <SUM>
 	val TERM	by SUM token { token ->
 		require(token is SumToken)
-		return@token TermToken(token.value)
+		return@token TermToken(token.value, token.raw)
 	}
 
 
 
-	class TermToken(val value: Double) : TokenType()
+	class TermToken(val value: Double, raw: String) : TokenType(raw)
 
-	class SumToken(val value: Double) : TokenType()
+	class SumToken(val value: Double, raw: String) : TokenType(raw)
 
-	class ProductToken(val value: Double) : TokenType()
+	class ProductToken(val value: Double, raw: String) : TokenType(raw)
 
-	class IntegerToken(val value: Double) : TokenType()
+	class IntegerToken(val value: Double, raw: String) : TokenType(raw)
 
 }

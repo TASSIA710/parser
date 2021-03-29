@@ -1,6 +1,5 @@
 package net.tassia.parser.grammars
 
-import net.tassia.parser.TokenTest1
 import net.tassia.parser.kotlin.or
 import net.tassia.parser.kotlin.with
 import net.tassia.parser.token.MultipleTokens
@@ -25,17 +24,17 @@ object TestGrammar1 {
 	val ROOT	by "Hello " with TARGET with "!" token
 	{ token ->
 		require(token is MultipleTokens)
-		return@token RootToken(token.tokens[1] as TargetToken)
+		return@token RootToken(token.tokens[1] as TargetToken, token.raw)
 	}
 
 
 
-	class RootToken(val target: TargetToken) : TokenType()
+	class RootToken(val target: TargetToken, raw: String) : TokenType(raw)
 
-	class TargetToken(val value: String) : TokenType() {
+	class TargetToken(val value: String, raw: String) : TokenType(raw) {
 		companion object {
-			val WORLD = TargetToken("world")
-			val STRANGER = TargetToken("stranger")
+			val WORLD = TargetToken("world", "World")
+			val STRANGER = TargetToken("stranger", "Stranger")
 		}
 	}
 

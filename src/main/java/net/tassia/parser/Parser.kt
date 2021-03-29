@@ -26,4 +26,19 @@ abstract class Parser(val provider: TokenProvider) {
 	@Throws(ParseException::class)
 	abstract fun parse(source: String, rule: Rule, offset: Int = 0): TokenType
 
+	/**
+	 * Parses the given source string for the given rule.
+	 * If the string has not been fully read after the rule
+	 * has been parsed, a ParseException is thrown, expecting an EOF.
+	 *
+	 * @param source the source string to pasrse
+	 * @param rule the rule to parse for
+	 * @param offset the offset to start parsing at
+	 * @return the parsed token
+	 *
+	 * @throws ParseException if, for example, an unexpected token was encountered
+	 */
+	@Throws(ParseException::class)
+	abstract fun parseFull(source: String, rule: Rule, offset: Int = 0): TokenType
+
 }

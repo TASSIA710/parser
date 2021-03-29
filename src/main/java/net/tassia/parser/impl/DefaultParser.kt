@@ -14,4 +14,11 @@ class DefaultParser(provider: TokenProvider) : Parser(provider) {
 		return parser.readPattern(RuleCallPattern(rule, Quantifier.ONCE))
 	}
 
+	override fun parseFull(source: String, rule: Rule, offset: Int): TokenType {
+		val parser = InstantiatedDefaultParser(provider, source.substring(offset))
+		val token = parser.readPattern(RuleCallPattern(rule, Quantifier.ONCE))
+		if (parser.isAtEOF()) return token
+		throw parser.expected("<EOF>")
+	}
+
 }

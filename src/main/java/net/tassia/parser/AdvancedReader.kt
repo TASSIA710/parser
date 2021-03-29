@@ -9,6 +9,10 @@ open class AdvancedReader(val source: String) {
 
 
 
+	fun isAtEOF() = index >= source.length
+
+
+
 	fun peek(): Char {
 		if (index < source.length) {
 			return source[index]
